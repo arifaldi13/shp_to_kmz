@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shapefile to KMZ Converter</title>
+    <style>
+        #drop-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin: 20px;
+            cursor: pointer;
+        }
+        #drop-area.highlight {
+            border-color: green;
+        }
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload Shapefile Components (.shp, .shx, .dbf)</h2>
+    
+    <div id="drop-area">
+        <p>Drag & Drop files here or click to select</p>
+        <input type="file" id="fileElem" multiple accept=".shp,.shx,.dbf">
+        <button onclick="document.getElementById('fileElem').click()">Select Files</button>
+    </div>
+    
+    <button onclick="uploadFiles()">Convert to KMZ</button>
+    <p id="status"></p>
+
+    <script>
+        let dropArea = document.getElementById("drop-area");
+        let fileInput = document.getElementById("fileElem");
+        let files = [];
+
+        dropArea.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropArea.classList.add("highlight");
+        });
+
+        dropArea.addEventListener("dragleave", () => {
+            dropArea.classList.remove("highlight");
+        });
+
+        dropArea.addEventListener("drop", (event) => {
+            event.preventDefault();
+            dropArea.classList.remove("highlight");
+            handleFiles(event.dataTransfer.files);
+        });
+
+        fileInput.addEventListener("change", () => {
+            handleFiles(fileInput.files);
+        });
+
+        function handleFiles(selectedFiles) {
+            files = [...selectedFiles];
+            document.getElementById("status").innerText = "Files: " + files.map(f => f.name).join(", ");
+        }
+
+        async function uploadFiles() {
+            if (files.length < 3) {
+                alert("Please upload .shp, .shx, and .dbf files.");
+                return;
+            }
+
+            let formData = new FormData();
+            files.forEach(file => formData.append("files", file));
+
+            let response = await fetch("/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                let blob = await response.blob();
+                let link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "output.kmz";
+                link.click();
+                document.getElementById("status").innerText = "Download complete!";
+            } else {
+                alert("Error in conversion");
+            }
+        }
+    </script>
+</body>
+</html>
