@@ -87,8 +87,8 @@ A simple web application built with Python and Flask that allows users to conver
 ├── requirements.txt   # Python package dependencies
 ├── templates/
 │   └── index.html     # HTML template for the web interface
-├── uploads/           # Temporary folder for uploaded files (created automatically, ignored by git)
-├── outputs/           # Temporary folder for generated KMZ (created automatically, ignored by git)
+├── uploads/           # Temporary folder for uploaded files (created automatically)
+├── outputs/           # Temporary folder for generated KMZ (created automatically)
 ├── .gitignore         # Specifies intentionally untracked files for Git
 └── README.md          # This file
 ```
