@@ -96,7 +96,3 @@ A simple web application built with Python and Flask that allows users to conver
 ## License
 
 This project is licensed under the MIT License - see the `LICENSE` file (you should create one!) for details. If you haven't added a `LICENSE` file, you can state: "This project is open source under the MIT License."
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a pull request or open an issue if you find bugs or have suggestions for improvements.
